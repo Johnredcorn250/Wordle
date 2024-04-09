@@ -1,0 +1,49 @@
+import random
+from colorama import Fore, Style
+
+def choose_word():
+    word_list = ["apple", "banana", "orange", "grape", "pear", "peach", "melon", "kiwi", "mango", "strawberry"]
+    return random.choice(word_list)
+
+def display_word(word, guessed_letters):
+    display = ""
+    for letter in word:
+        if letter in guessed_letters:
+            display += Fore.GREEN + letter + Style.RESET_ALL
+        else:
+            display += "-"
+    return display
+
+def wordle():
+    word = choose_word()
+    guessed_letters = set()
+    attempts = 6
+
+    print("Welcome to Wordle!")
+    print("Guess the word. You have 6 attempts.")
+
+    while attempts > 0:
+        print("\nAttempts left:", attempts)
+        print("Word:", display_word(word, guessed_letters))
+        
+        guess = input("Enter your guess (5-letter word): ").lower()
+
+        if guess == word:
+            print("Congratulations! You guessed the word correctly:", word)
+            break
+        elif len(guess) != 5:
+            print("Please enter a 5-letter word.")
+        elif guess in guessed_letters:
+            print("You've already guessed that letter.")
+        elif guess == "":
+            print("Please enter a valid guess.")
+        else:
+            guessed_letters.add(guess)
+            attempts -= 1
+            print(Fore.RED + "Incorrect guess. Try again." + Style.RESET_ALL)
+
+    if attempts == 0:
+        print("\nYou're out of attempts! The word was:", word)
+
+if __name__ == "__main__":
+    wordle()
